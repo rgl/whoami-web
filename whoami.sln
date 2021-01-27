@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "whoami", "whoami.csproj", "{12CE2FE5-00B9-4117-BFE4-71C401F152BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12CE2FE5-00B9-4117-BFE4-71C401F152BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CE2FE5-00B9-4117-BFE4-71C401F152BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CE2FE5-00B9-4117-BFE4-71C401F152BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CE2FE5-00B9-4117-BFE4-71C401F152BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1959C3F4-1255-4C1D-8F2B-F75422E17D3C}
+	EndGlobalSection
+EndGlobal
