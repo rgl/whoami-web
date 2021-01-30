@@ -1,7 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <DebugType>embedded</DebugType>
+    <!--
+      PublishTrimmed will trim the application dependencies to include only what is actually used by the application.
+      NB if you use reflection you might need to configure which assemblies/types/methods need to be included, e.g.:
+          <ItemGroup>
+            <TrimmerRootAssembly Include="My.Assembly.Full.Name" />
+          </ItemGroup>
+    -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <!--
+      TrimMode selects the trimming mode:
+        CopyUsed (default): Assembly-level trimming
+        Link:               Member-level trimming
+    -->
+    <TrimMode>Link</TrimMode>
+    <!--
+      PublishSingleFile creates a single exe (which includes its .net dependencies)
+      and copies the native dependencies to the output directory.
+    -->
+    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.3.0" />
   </ItemGroup>
