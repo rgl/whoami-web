@@ -4,6 +4,29 @@
     ViewData["Title"] = "Integrated Authentication";
 }
 
+<h2>User WindowsIdentity.Name</h2>
+<pre>@Model.Name</pre>
+
+<h2>User WindowsIdentity.User</h2>
+<pre>@Model.Sid</pre>
+
+<h2>User WindowsIdentity.ImpersonationLevel</h2>
+<pre>@Model.ImpersonationLevel</pre>
+
+<h2>User WindowsIdentity.Groups</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Sid</th>
+    </tr>
+    @foreach (var g in Model.Groups)
+    {
+        <tr>
+            <td>@g.Name</td>
+            <td>@g.Sid</td>
+        </tr>
+    }
+</table>
 
 <h2>User.Claims</h2>
 <table>

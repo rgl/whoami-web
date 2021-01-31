@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using whoami.Models;
 
@@ -18,10 +20,28 @@ namespace whoami.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var user = (WindowsIdentity)User.Identity;
+
+            var groups = user.Groups.Select(g =>
+                    new IntegratedAuthenticationModel.Group
+                    {
+                        Name = g.Translate(typeof(NTAccount)).ToString(),
+                        Sid = g.Value,
+                    }
+                )
+                .OrderBy(g => g.Name)
+                .ToArray();
+
+            var whoami = await WindowsIdentity.RunImpersonatedAsync(user.AccessToken, Whoami.Get);
+
             return View(
                 new IntegratedAuthenticationModel
                 {
-                    Whoami = await Whoami.Get(),
+                    Name = user.Name,
+                    Sid = user.User.ToString(),
+                    ImpersonationLevel = user.ImpersonationLevel.ToString(),
+                    Groups = groups,
+                    Whoami = whoami,
                 });
         }
     }

@@ -2,6 +2,15 @@
 {
     public class IntegratedAuthenticationModel
     {
-        public string Whoami { get; set; }
+        public class Group
+        {
+            public string Name;
+            public string Sid;
+        }
+        public string Name;
+        public string Sid;
+        public string ImpersonationLevel;
+        public Group[] Groups;
+        public string Whoami;
     }
 }
