@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using whoami.Models;
@@ -18,6 +19,7 @@ namespace whoami.Controllers
             _logger = logger;
         }
 
+        [SupportedOSPlatform("windows")]
         public async Task<IActionResult> Index()
         {
             var user = (WindowsIdentity)User.Identity;
