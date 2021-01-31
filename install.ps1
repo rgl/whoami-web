@@ -8,10 +8,14 @@ trap {
     Exit 1
 }
 
+# NB quite astoundingly dotnet build (or msbuild) sometimes does not correctly
+#    set its exit code, so we have to inspected the output...
+#    see https://github.com/dotnet/msbuild/issues/5689
+#    see https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019
 # NB we use the debug version because its faster to build than doing a publish.
-dotnet build
-if ($LASTEXITCODE) {
-    throw "dotnet build failed with exit code $LASTEXITCODE"
+dotnet build -warnAsError -flp:verbosity=detailed -flp:logfile=build.log
+if ((Get-Content -Tail 10 build.log) -notcontains 'Build succeeded.') {
+    throw 'dotnet build failed. see the details in build.log'
 }
 
 if (Get-Service whoami -ErrorAction SilentlyContinue) {
