@@ -23,9 +23,16 @@ jobs:
           }
       - name: Publish
         run: dotnet publish --no-build --configuration Release
-      - name: Artifacts
+      - name: Create Artifacts
+        run: |
+          Compress-Archive `
+            -CompressionLevel Optimal `
+            -Path bin/Release/net5.0/win10-x64/publish/* `
+            -DestinationPath whoami-web.zip
+          Write-Output "$((Get-FileHash whoami-web.zip -Algorithm 'SHA256').Hash) whoami-web.zip"
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Artifacts
           path: |
-            bin/Release/net5.0/win10-x64/publish/
+            whoami-web.zip
