@@ -8,31 +8,8 @@ This is intended to be run as a windows service inside the [rgl/windows-domain-c
 
 ## Usage
 
-Install the windows service as the `whoami` gMSA:
-
-```powershell
-$result = sc.exe create whoami `
-    DisplayName= 'Who Am I?' `
-    binPath= "C:\whoami-web\whoami.exe" `
-    obj= 'EXAMPLE\whoami$' `
-    start= auto
-if ($result -ne '[SC] CreateService SUCCESS') {
-    throw "sc.exe create failed with $result"
-}
-$result = sc.exe description whoami `
-    'The introspective service'
-if ($result -ne '[SC] ChangeServiceConfig2 SUCCESS') {
-    throw "sc.exe description failed with $result"
-}
-$result = sc.exe failure whoami `
-    reset= '0' `
-    actions= 'restart/60000'
-if ($result -ne '[SC] ChangeServiceConfig2 SUCCESS') {
-    throw "sc.exe failure failed with $result"
-}
-```
-
-Install the binaries at `C:\whoami-web` and start the service:
+Build the binaries, install them at `C:\whoami-web`, install the `whoami`
+service as the `whoami` gMSA, and start it:
 
 ```powershell
 .\install.ps1
@@ -41,9 +18,5 @@ Install the binaries at `C:\whoami-web` and start the service:
 After you are done with the service, uninstall it:
 
 ```powershell
-Stop-Service whoami
-$result = sc.exe delete whoami
-if ($result -ne '[SC] DeleteService SUCCESS') {
-    throw "sc.exe delete failed with $result"
-}
+.\uninstall.ps1
 ```
