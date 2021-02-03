@@ -8,10 +8,16 @@ trap {
     Exit 1
 }
 
+$serviceName = Split-Path -Leaf $PSScriptRoot
+$serviceHome = "c:\$serviceName"
+
 # uninstall the service.
-if (Get-Service whoami -ErrorAction SilentlyContinue) {
-    Stop-Service whoami
-    $result = sc.exe delete whoami
+if (Get-Service $serviceName -ErrorAction SilentlyContinue) {
+    Write-Host "Stopping the $serviceName windows service..."
+    Stop-Service $serviceName
+
+    Write-Host "Deleting the $serviceName windows service..."
+    $result = sc.exe delete $serviceName
     if ($result -ne '[SC] DeleteService SUCCESS') {
         throw "sc.exe delete failed with $result"
     }
@@ -19,7 +25,8 @@ if (Get-Service whoami -ErrorAction SilentlyContinue) {
 
 # uninstall the binaries.
 if (Test-Path Program.cs) {
-    if (Test-Path c:\whoami-web) {
-        Remove-Item -Recurse c:\whoami-web
+    if (Test-Path $serviceHome) {
+        Write-Host "Deleting the $serviceHome directory..."
+        Remove-Item -Recurse $serviceHome
     }
 }

@@ -27,7 +27,7 @@ jobs:
         run: |
           Compress-Archive `
             -CompressionLevel Optimal `
-            -Path bin/Release/net5.0/win10-x64/publish/* `
+            -Path *.ps1,bin/Release/net5.0/win10-x64/publish/* `
             -DestinationPath whoami-web.zip
           Write-Output "$((Get-FileHash whoami-web.zip -Algorithm 'SHA256').Hash) whoami-web.zip"
       - name: Upload Artifacts

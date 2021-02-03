@@ -8,6 +8,9 @@ trap {
     Exit 1
 }
 
+$serviceName = Split-Path -Leaf $PSScriptRoot
+$serviceHome = "c:\$serviceName"
+
 # build the binaries.
 # NB quite astoundingly dotnet build (or msbuild) sometimes does not correctly
 #    set its exit code, so we have to inspected the output...
@@ -19,29 +22,27 @@ if (Test-Path Program.cs) {
     if ((Get-Content -Tail 10 build.log) -notcontains 'Build succeeded.') {
         throw 'dotnet build failed. see the details in build.log'
     }
-    $installPath = 'c:\whoami-web'
-} else {
-    $installPath = $PSScriptRoot
 }
 
 # uninstall the existing version.
 .\uninstall.ps1
 
 # install the service.
-$result = sc.exe create whoami `
+Write-Host "Installing the $serviceName windows service..."
+$result = sc.exe create $serviceName `
     DisplayName= 'Who Am I?' `
-    binPath= "$installPath\whoami.exe" `
+    binPath= "$serviceHome\whoami.exe" `
     obj= 'EXAMPLE\whoami$' `
     start= auto
 if ($result -ne '[SC] CreateService SUCCESS') {
     throw "sc.exe create failed with $result"
 }
-$result = sc.exe description whoami `
+$result = sc.exe description $serviceName `
     'The introspective service'
 if ($result -ne '[SC] ChangeServiceConfig2 SUCCESS') {
     throw "sc.exe description failed with $result"
 }
-$result = sc.exe failure whoami `
+$result = sc.exe failure $serviceName `
     reset= '0' `
     actions= 'restart/60000'
 if ($result -ne '[SC] ChangeServiceConfig2 SUCCESS') {
@@ -50,9 +51,11 @@ if ($result -ne '[SC] ChangeServiceConfig2 SUCCESS') {
 
 # install the binaries.
 if (Test-Path Program.cs) {
-    Copy-Item -Recurse 'bin\debug\net5.0\win10-x64' $installPath
-    Copy-Item -Recurse 'wwwroot' $installPath
+    Write-Host "Installing the $serviceName binaries at $serviceHome..."
+    Copy-Item -Recurse 'bin\debug\net5.0\win10-x64' $serviceHome
+    Copy-Item -Recurse 'wwwroot' $serviceHome
 }
 
 # start the service.
-Start-Service whoami
+Write-Host "Starting the $serviceName windows service..."
+Start-Service $serviceName
