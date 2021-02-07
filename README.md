@@ -26,3 +26,5 @@ After you are done with the service, uninstall it:
 * [Group Managed Service Accounts Overview](https://docs.microsoft.com/en-us/windows-server/security/group-managed-service-accounts/group-managed-service-accounts-overview)
 * [How the Kerberos Version 5 Authentication Protocol Works](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc772815(v=ws.10)?redirectedfrom=MSDN)
 * [Impersonation Levels (Authorization)](https://docs.microsoft.com/en-us/windows/win32/secauthz/impersonation-levels)
+* [Impersonate a client after authentication](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/impersonate-a-client-after-authentication)
+* [Spawn a process that runs under the context of the impersonated user in Microsoft ASP.NET](https://docs.microsoft.com/en-us/troubleshoot/aspnet/spawn-process-under-impersonated-user)

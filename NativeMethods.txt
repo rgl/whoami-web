@@ -1,0 +1,5 @@
+﻿CreatePipe
+CreateProcessAsUser
+DuplicateHandle
+GetExitCodeProcess
+SetHandleInformation

@@ -1,25 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using System.Runtime.Versioning;
 using whoami.Models;
 
 namespace whoami.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public async Task<IActionResult> Index()
+        [SupportedOSPlatform("windows")]
+        public IActionResult Index()
         {
             return View(
                 new HomeViewModel
                 {
-                    Whoami = await Whoami.Get(),
+                    Whoami = Whoami.Get(),
                 });
         }
     }

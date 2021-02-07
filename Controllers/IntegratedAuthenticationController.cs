@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using whoami.Models;
 
 namespace whoami.Controllers
@@ -12,15 +10,8 @@ namespace whoami.Controllers
     [Authorize]
     public class IntegratedAuthenticationController : Controller
     {
-        private readonly ILogger<IntegratedAuthenticationController> _logger;
-
-        public IntegratedAuthenticationController(ILogger<IntegratedAuthenticationController> logger)
-        {
-            _logger = logger;
-        }
-
         [SupportedOSPlatform("windows")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var user = (WindowsIdentity)User.Identity;
 
@@ -34,7 +25,11 @@ namespace whoami.Controllers
                 .OrderBy(g => g.Name)
                 .ToArray();
 
-            var whoami = await WindowsIdentity.RunImpersonatedAsync(user.AccessToken, Whoami.Get);
+            // NB WindowsIdentity.RunImpersonated impersonates the user at the
+            //    thread level, and as such, we cannot use
+            //    System.Diagnostics.Process to spawn processes that run under
+            //    the context of the impersonated user. Instead we must use
+            //    CreateProcessAsUser (like CliProcess used by Whoami.Get).
 
             return View(
                 new IntegratedAuthenticationModel
@@ -43,7 +38,7 @@ namespace whoami.Controllers
                     Sid = user.User.ToString(),
                     ImpersonationLevel = user.ImpersonationLevel.ToString(),
                     Groups = groups,
-                    Whoami = whoami,
+                    Whoami = Whoami.Get(user.AccessToken),
                 });
         }
     }
