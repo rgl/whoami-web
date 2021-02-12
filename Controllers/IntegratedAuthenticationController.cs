@@ -39,6 +39,7 @@ namespace whoami.Controllers
                     ImpersonationLevel = user.ImpersonationLevel.ToString(),
                     Groups = groups,
                     Whoami = Whoami.Get(user.AccessToken),
+                    EnvironmentVariables = EnvironmentVariables.Get(user.AccessToken),
                 });
         }
     }

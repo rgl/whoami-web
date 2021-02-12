@@ -13,6 +13,7 @@ namespace whoami.Controllers
                 new HomeViewModel
                 {
                     Whoami = Whoami.Get(),
+                    EnvironmentVariables = EnvironmentVariables.Get(),
                 });
         }
     }

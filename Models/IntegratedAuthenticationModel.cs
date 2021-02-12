@@ -12,5 +12,6 @@
         public string ImpersonationLevel;
         public Group[] Groups;
         public string Whoami;
+        public string EnvironmentVariables;
     }
 }
