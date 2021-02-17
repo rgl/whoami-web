@@ -1,3 +1,7 @@
+param(
+    [string]$serviceUser = 'EXAMPLE\whoami$'
+)
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
@@ -32,7 +36,7 @@ Write-Host "Installing the $serviceName windows service..."
 $result = sc.exe create $serviceName `
     DisplayName= 'Who Am I?' `
     binPath= "$serviceHome\whoami.exe" `
-    obj= 'EXAMPLE\whoami$' `
+    obj= $serviceUser `
     start= auto
 if ($result -ne '[SC] CreateService SUCCESS') {
     throw "sc.exe create failed with $result"
